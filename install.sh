@@ -37,7 +37,7 @@ if [ "$DIST" == "Ubuntu" ] && [ "$DIST_VER" == "16.04" ]; then
 		addrepoonubuntu
 	else
 		if [ ! -f /etc/apt/sources.list.d/puppet5.list ]; then
-			echo -e "apt remove puppet5-release\n"
+			echo -e "apt purge puppet5-release\n"
 			apt -y remove puppet5-release
 			addrepoonubuntu
 		else
