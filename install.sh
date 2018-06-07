@@ -31,11 +31,13 @@ if [ "$DIST" == "Ubuntu" ] && [ "$DIST_VER" == "16.04" ]; then
 	PUPPET_PACKAGE="puppet5-release-$DIST_CODENAME.deb"
 	if [ $(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed") == 0 ]; then
 		if [ -f /etc/apt/sources.list.d/puppet5.list ]; then
+			echo -e "rm /etc/apt/sources.list.d/puppet5.list\n"
 			rm /etc/apt/sources.list.d/puppet5.list
 		fi
 		addrepoonubuntu
 	else
 		if [ ! -f /etc/apt/sources.list.d/puppet5.list ]; then
+			echo -e "apt remove puppet5-release\n"
 			apt remove puppet5-release
 			addrepoonubuntu
 		else
