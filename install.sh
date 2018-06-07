@@ -17,15 +17,28 @@ fi
 ###Adding the Puppet 5 Platform repository
 if [ "$DIST" == "Ubuntu" ] && [ "$DIST_VER" == "16.04" ]; then
 	echo -e "The distribution is Ubuntu 16.04\n"
-	if [ ! -f /etc/apt/sources.list.d/puppet5.list ]; then
+	if [ $(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed") == 0 ]; then
 		echo -e "Adding the Puppet 5 Platform repository\n"
+		if [ -f /etc/apt/sources.list.d/puppet5.list ]; then
+			rm /etc/apt/sources.list.d/puppet5.list
+		fi
 		cd "$TMP_DIR"
 		wget "$PACKAGES_LOCATION$XENIAL_PACKAGE"
 		dpkg -i "$XENIAL_PACKAGE"
 		rm "$XENIAL_PACKAGE"
 		apt update
 	else
-		echo -e "The Puppet 5 Platform repository already added\n"
+		if [ ! -f /etc/apt/sources.list.d/puppet5.list ]; then
+			apt remove puppet5-release
+			echo -e "Adding the Puppet 5 Platform repository\n"
+			cd "$TMP_DIR"
+			wget "$PACKAGES_LOCATION$XENIAL_PACKAGE"
+			dpkg -i "$XENIAL_PACKAGE"
+			rm "$XENIAL_PACKAGE"
+			apt update
+		else
+			echo -e "The Puppet 5 Platform repository already added\n"
+		fi
 	fi
 else
 	echo -e "Unknown Linux distribution, the Puppet 5 Platform repository will not be added\n"
