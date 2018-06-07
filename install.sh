@@ -38,7 +38,7 @@ if [ "$DIST" == "Ubuntu" ] && [ "$DIST_VER" == "16.04" ]; then
 	else
 		if [ ! -f /etc/apt/sources.list.d/puppet5.list ]; then
 			echo -e "apt purge puppet5-release\n"
-			apt -y remove puppet5-release
+			apt -y purge puppet5-release
 			addrepoonubuntu
 		else
 			echo -e "The Puppet 5 Platform repository already added\n"
