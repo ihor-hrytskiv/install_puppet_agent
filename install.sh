@@ -36,7 +36,7 @@ fi
 
 ###Installing the Puppet 5 Platform
 if [ "$DIST" == "Ubuntu" ]; then
-	if [ "$(dpkg-query -W -f='${Status}' puppet-agent 2>/dev/null | grep -c "ok installed")" == 0]; then
+	if [ $(dpkg-query -W -f='${Status}' puppet-agent 2>/dev/null | grep -c "ok installed") == 0]; then
 		echo "Installing the Puppet 5 Platform"
 		apt-get install puppet-agent
 		/opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
