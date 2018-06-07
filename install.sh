@@ -15,6 +15,16 @@ else
 	DIST_VER="Unknown"
 fi
 
+###Addin the Puppet 5 Platform repository on Ubuntu
+addrepoonubuntu () {
+        echo -e "Adding the Puppet 5 Platform repository\n"
+        cd "$TMP_DIR"
+        wget "$PACKAGES_LOCATION$PUPPET_PACKAGE"
+        dpkg -i "$PUPPET_PACKAGE"
+        rm "$PUPPET_PACKAGE"
+        apt update
+}
+
 ###Adding the Puppet 5 Platform repository
 if [ "$DIST" == "Ubuntu" ] && [ "$DIST_VER" == "16.04" ]; then
 	echo -e "The distribution is Ubuntu 16.04\n"
@@ -35,16 +45,6 @@ if [ "$DIST" == "Ubuntu" ] && [ "$DIST_VER" == "16.04" ]; then
 else
 	echo -e "Unknown Linux distribution, the Puppet 5 Platform repository will not be added\n"
 fi
-
-###Addin the Puppet 5 Platform repository on Ubuntu
-function addrepoonubuntu {
-	echo -e "Adding the Puppet 5 Platform repository\n"
-	cd "$TMP_DIR"
-	wget "$PACKAGES_LOCATION$PUPPET_PACKAGE"
-	dpkg -i "$PUPPET_PACKAGE"
-	rm "$PUPPET_PACKAGE"
-	apt update
-}
 
 ###Installing the Puppet 5 Platform
 if [ "$DIST" == "Ubuntu" ]; then
