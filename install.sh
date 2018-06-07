@@ -17,8 +17,8 @@ fi
 
 ###Adding the Puppet 5 Platform repository
 if [ "$DIST" == "Ubuntu" ] && [ "$DIST_VER" == "16.04" ]; then
-	PUPPET_PACKAGE="puppet5-release-$DIST_CODENAME.deb"
 	echo -e "The distribution is Ubuntu 16.04\n"
+	PUPPET_PACKAGE="puppet5-release-$DIST_CODENAME.deb"
 	if [ $(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed") == 0 ]; then
 		if [ -f /etc/apt/sources.list.d/puppet5.list ]; then
 			rm /etc/apt/sources.list.d/puppet5.list
