@@ -29,7 +29,7 @@ addrepoonubuntu () {
 if [ "$DIST" == "Ubuntu" ] && [ "$DIST_VER" == "16.04" ]; then
 	echo -e "The distribution is Ubuntu 16.04\n"
 	PUPPET_PACKAGE="puppet5-release-$DIST_CODENAME.deb"
-	if [ $(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed") == 0 ]; then
+	if [ "$(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed")" == 0 ]; then
 		if [ -f /etc/apt/sources.list.d/puppet5.list ]; then
 			echo -e "rm /etc/apt/sources.list.d/puppet5.list\n"
 			rm /etc/apt/sources.list.d/puppet5.list
@@ -50,7 +50,7 @@ fi
 
 ###Installing the Puppet 5 Platform
 if [ "$DIST" == "Ubuntu" ]; then
-	if [ $(dpkg-query -W -f='${Status}' puppet-agent 2>/dev/null | grep -c "ok installed") == 0 ]; then
+	if [ "$(dpkg-query -W -f='${Status}' puppet-agent 2>/dev/null | grep -c "ok installed")" == 0 ]; then
 		echo -e "Installing the Puppet 5 Platform\n"
 		apt-get install puppet-agent
 		/opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
