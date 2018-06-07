@@ -21,9 +21,9 @@ echo "$DISTRIB_RELEASE"
 if [ "$DIST" == "Ubuntu" ] && [ "$DIST_VER" == "16.04" ]; then
 	echo "The distribution is Ubuntu 16.04"
 	cd "$TMP_DIR"
-	wget "$PACKAGES_LOCATION""$UBUNTU_16.04_PACKAGE"
-	sudo dpkg -i "$UBUNTU_16.04_PACKAGE"
-	sudo apt update
+	wget "$PACKAGES_LOCATION$UBUNTU_16.04_PACKAGE"
+	dpkg -i "$UBUNTU_16.04_PACKAGE"
+	apt update
 else
 	echo "Unknown Linux distribution, the Puppet 5 Platform repository will not be added"
 fi
