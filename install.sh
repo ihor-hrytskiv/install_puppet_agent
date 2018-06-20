@@ -15,40 +15,35 @@ else
 	DIST_VER="Unknown"
 fi
 
-###Addin the Puppet 5 Platform repository on Ubuntu
-addrepoonubuntu () {
-        echo -e "Adding the Puppet 5 Platform repository\n"
-        cd "$TMP_DIR"
-        wget "$PACKAGES_LOCATION$PUPPET_PACKAGE"
-        dpkg -i "$PUPPET_PACKAGE"
-        rm "$PUPPET_PACKAGE"
-        apt update
-}
-
-###Adding the Puppet 5 Platform repository
-if [ "$DIST" == "Ubuntu" ] && [ "$DIST_VER" == "16.04" ]; then
-	echo -e "The distribution is Ubuntu 16.04\n"
+###Adding the Puppet 5 Platform repository on Ubuntu
+if [ "$DIST" == "Ubuntu" ]; then
+	echo -e "The distribution is Ubuntu\n"
 	PUPPET_PACKAGE="puppet5-release-$DIST_CODENAME.deb"
-	if [ "$(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed")" == 0 ]; then
-		if [ -f /etc/apt/sources.list.d/puppet5.list ]; then
-			echo -e "rm /etc/apt/sources.list.d/puppet5.list\n"
-			rm /etc/apt/sources.list.d/puppet5.list
-		fi
-		addrepoonubuntu
+	if [ "$(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed")" == 1 ] && [ ! -f /etc/apt/sources.list.d/puppet5.list ]; then
+		echo -e "apt purge puppet5-release\n"
+		apt -y purge puppet5-release
 	else
-		if [ ! -f /etc/apt/sources.list.d/puppet5.list ]; then
-			echo -e "apt purge puppet5-release\n"
-			apt -y purge puppet5-release
-			addrepoonubuntu
-		else
-			echo -e "The Puppet 5 Platform repository already added\n"
-		fi
+		echo -e "The Puppet 5 Platform repository already added\n"
+	fi
+
+	if [ "$(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed")" == 0 ]; then
+		if [ -f /etc/apt/sources.list.d/puppet5.list ]; then 
+			echo -e "rm /etc/apt/sources.list.d/puppet5.list\n" 
+			rm /etc/apt/sources.list.d/puppet5.list 
+		fi 
+	else
+		echo -e "Adding the Puppet 5 Platform repository\n"
+        	cd "$TMP_DIR"
+        	wget "$PACKAGES_LOCATION$PUPPET_PACKAGE"
+        	dpkg -i "$PUPPET_PACKAGE"
+        	rm "$PUPPET_PACKAGE"
+        	apt update
 	fi
 else
 	echo -e "Unknown Linux distribution, the Puppet 5 Platform repository will not be added\n"
 fi
 
-###Installing the Puppet 5 Platform
+###Installing the Puppet 5 Platform on Ubuntu
 if [ "$DIST" == "Ubuntu" ]; then
 	if [ "$(dpkg-query -W -f='${Status}' puppet-agent 2>/dev/null | grep -c "ok installed")" == 0 ]; then
 		echo -e "Installing the Puppet 5 Platform\n"
