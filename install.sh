@@ -22,8 +22,6 @@ if [ "$DIST" == "Ubuntu" ]; then
 	if [ "$(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed")" == 1 ] && [ ! -f /etc/apt/sources.list.d/puppet5.list ]; then
 		echo -e "apt purge puppet5-release\n"
 		apt -y purge puppet5-release
-	else
-		echo -e "The Puppet 5 Platform repository already added\n"
 	fi
 
 	if [ "$(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed")" == 0 ]; then
@@ -31,13 +29,14 @@ if [ "$DIST" == "Ubuntu" ]; then
 			echo -e "rm /etc/apt/sources.list.d/puppet5.list\n" 
 			rm /etc/apt/sources.list.d/puppet5.list 
 		fi 
-	else
 		echo -e "Adding the Puppet 5 Platform repository\n"
         	cd "$TMP_DIR"
         	wget "$PACKAGES_LOCATION$PUPPET_PACKAGE"
         	dpkg -i "$PUPPET_PACKAGE"
         	rm "$PUPPET_PACKAGE"
         	apt update
+	else
+		echo -e "The Puppet 5 Platform repository already added\n"
 	fi
 else
 	echo -e "Unknown Linux distribution, the Puppet 5 Platform repository will not be added\n"
