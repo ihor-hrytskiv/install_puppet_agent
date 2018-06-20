@@ -21,20 +21,20 @@ if [ "$DIST" == "Ubuntu" ]; then
 	PUPPET_PACKAGE="puppet5-release-$DIST_CODENAME.deb"
 	if [ "$(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed")" == 1 ] && [ ! -f /etc/apt/sources.list.d/puppet5.list ]; then
 		echo -e "apt purge puppet5-release\n"
-		apt -y purge puppet5-release
+		sudo apt -y purge puppet5-release
 	fi
 
 	if [ "$(dpkg-query -W -f='${Status}' puppet5-release 2>/dev/null | grep -c "ok installed")" == 0 ]; then
 		if [ -f /etc/apt/sources.list.d/puppet5.list ]; then 
 			echo -e "rm /etc/apt/sources.list.d/puppet5.list\n" 
-			rm /etc/apt/sources.list.d/puppet5.list 
+			sudo rm /etc/apt/sources.list.d/puppet5.list 
 		fi 
 		echo -e "Adding the Puppet 5 Platform repository\n"
         	cd "$TMP_DIR"
         	wget "$PACKAGES_LOCATION$PUPPET_PACKAGE"
-        	dpkg -i "$PUPPET_PACKAGE"
-        	rm "$PUPPET_PACKAGE"
-        	apt update
+        	sudo dpkg -i "$PUPPET_PACKAGE"
+        	sudo rm "$PUPPET_PACKAGE"
+        	sudo apt update
 	else
 		echo -e "The Puppet 5 Platform repository already added\n"
 	fi
@@ -46,9 +46,9 @@ fi
 if [ "$DIST" == "Ubuntu" ]; then
 	if [ "$(dpkg-query -W -f='${Status}' puppet-agent 2>/dev/null | grep -c "ok installed")" == 0 ]; then
 		echo -e "Installing the Puppet 5 Platform\n"
-		apt-get install puppet-agent
-		/opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
-		/opt/puppetlabs/bin/puppet agent --test
+		sudo apt-get install puppet-agent
+		sudo /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
+		sudo /opt/puppetlabs/bin/puppet agent --test
 	else
 		echo -e "The Puppet 5 Platform already installed\n"
 	fi
