@@ -13,6 +13,7 @@ if [ -f /etc/lsb-release ]; then
 else
 	DIST="Unknown"
 	DIST_VER="Unknown"
+	DIST_CODENAME="Unknown"
 fi
 
 ###Adding the Puppet 5 Platform repository on Ubuntu
