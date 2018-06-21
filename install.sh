@@ -49,7 +49,6 @@ if [ "$DIST" == "Ubuntu" ]; then
 		echo -e "Installing the Puppet 5 Platform\n"
 		sudo apt-get install puppet-agent
 		sudo /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
-		sudo /opt/puppetlabs/bin/puppet agent --test
 	else
 		echo -e "The Puppet 5 Platform already installed\n"
 	fi
